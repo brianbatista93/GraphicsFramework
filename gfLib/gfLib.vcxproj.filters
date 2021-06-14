@@ -36,6 +36,12 @@
     <ClInclude Include="Windows\WindowsApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Interfaces\IGraphicsSurface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX11\DX11Surface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -45,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Windows\WindowsApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX11\DX11Surface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,5 +1,5 @@
 #include "DX11Device.h"
-// #include "DX11Surface.h"
+#include "DX11Surface.h"
 
 bool
 DX11Device::Initialize()
@@ -59,56 +59,48 @@ DX11Device::CreateDeviceImpl()
     return true;
 }
 
-//IGraphicsSurface*
-//DX11Device::CreateSurface(HWND windowHandle)
-//{
-//    ComPtr<IDXGIFactory>   dxgiFactory;
-//    ComPtr<IDXGIDevice>    dxgiDevice;
-//    ComPtr<IDXGIAdapter>   dxgiAdapter;
-//    ComPtr<IDXGISwapChain> swapChain;
-//
-//    if (FAILED(m_d3d11Device->QueryInterface(IID_PPV_ARGS(&dxgiDevice)))) {
-//        return nullptr;
-//    }
-//
-//    if (FAILED(dxgiDevice->GetAdapter(&dxgiAdapter))) {
-//        return nullptr;
-//    }
-//
-//    if (FAILED(dxgiAdapter->GetParent(IID_PPV_ARGS(&dxgiFactory)))) {
-//        return nullptr;
-//    }
-//
-//    RECT rect;
-//    if (GetWindowRect(windowHandle, &rect) != TRUE) {
-//        return nullptr;
-//    }
-//
-//    UINT width  = rect.right - rect.left;
-//    UINT height = rect.bottom - rect.top;
-//
-//    DXGI_SWAP_CHAIN_DESC swapChainDesc{
-//			 .BufferDesc = {
-//				.Width = width,
-//				.Height = height,
-//				.Format = DXGI_FORMAT_R10G10B10A2_UNORM,
-//			  },
-//			 .SampleDesc = {
-//				.Count = 1,
-//				.Quality = 0
-//				},
-//			 .BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT,
-//			 .BufferCount = 2,
-//			 .OutputWindow = windowHandle,
-//			 .Windowed = TRUE,
-//			 .SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD,
-//			 .Flags = 0
-//	};
-//
-//    if (FAILED(dxgiFactory->CreateSwapChain(m_d3d11Device.Get(), &swapChainDesc, &swapChain))) {
-//        SetErrorMessage("CreateSwapChain failed.");
-//        return nullptr;
-//    }
-//
-//    return new Dx11Surface(this, swapChain.Get());
-//}
+IGraphicsSurface*
+DX11Device::CreateSurface(void* windowHandle, uint32 width, uint32 height)
+{
+    ComPtr<IDXGIFactory>   dxgiFactory;
+    ComPtr<IDXGIDevice>    dxgiDevice;
+    ComPtr<IDXGIAdapter>   dxgiAdapter;
+    ComPtr<IDXGISwapChain> swapChain;
+
+    if (FAILED(m_d3d11Device->QueryInterface(IID_PPV_ARGS(&dxgiDevice)))) {
+        return nullptr;
+    }
+
+    if (FAILED(dxgiDevice->GetAdapter(&dxgiAdapter))) {
+        return nullptr;
+    }
+
+    if (FAILED(dxgiAdapter->GetParent(IID_PPV_ARGS(&dxgiFactory)))) {
+        return nullptr;
+    }
+
+    DXGI_SWAP_CHAIN_DESC swapChainDesc {
+      .BufferDesc {
+        .Width  = width,
+        .Height = height,
+        .Format = DXGI_FORMAT_R10G10B10A2_UNORM,
+      },
+      .SampleDesc {
+        .Count   = 1,
+        .Quality = 0,
+      },
+      .BufferUsage  = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT,
+      .BufferCount  = 2,
+      .OutputWindow = reinterpret_cast<HWND>(windowHandle),
+      .Windowed     = TRUE,
+      .SwapEffect   = DXGI_SWAP_EFFECT_FLIP_DISCARD,
+      .Flags        = 0,
+    };
+
+    if (FAILED(dxgiFactory->CreateSwapChain(m_d3d11Device.Get(), &swapChainDesc, &swapChain))) {
+        SetErrorMessage("CreateSwapChain failed.");
+        return nullptr;
+    }
+
+    return new DX11Surface(this, swapChain.Get());
+}
