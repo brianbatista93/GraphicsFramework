@@ -1,0 +1,20 @@
+#pragma once
+
+#define HAS_FLAG(bits, flag) (bits & flag) == flag
+
+enum ETextureFlags : unsigned int
+{
+    TEXTURE_FLAG_NONE             = 0x00000000u,
+    TEXTURE_FLAG_RENDER_TARGET    = 0x00000001u,
+    TEXTURE_FLAG_DEPTH_STENCIL    = 0x00000010u,
+    TEXTURE_FLAG_SHADER_RESOURCE  = 0x00000100u,
+    TEXTURE_FLAG_UNORDERED_ACCESS = 0x00001000u,
+    TEXTURE_FLAG_SWAP_CHAIN       = 0x00010000u
+};
+
+enum EPixelFormat
+{
+    PIXEL_FORMAT_UNKNOWN = 0,
+    PIXEL_FORMAT_R8G8B8A8,
+    PIXEL_FORMAT_R10G10B10A2
+};
