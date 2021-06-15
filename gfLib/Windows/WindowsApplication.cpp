@@ -6,8 +6,6 @@ void
 WindowsApplication::TickFrame()
 {
     PumpMessages();
-
-    m_graphicsSurface->Present();
 }
 
 bool

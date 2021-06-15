@@ -7,6 +7,8 @@ struct IApplication
     virtual void TickFrame() = 0;
 
     virtual bool IsExiting() = 0;
+
+    virtual struct IGraphicsSurface* GetSurface() = 0;
 };
 
 template<class ApplicationType, class GraphicsType, class... ArgsType>

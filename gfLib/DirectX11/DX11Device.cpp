@@ -1,5 +1,7 @@
 #include "DX11Device.h"
+#include "DX11GraphicsContext.h"
 #include "DX11Surface.h"
+#include "Interfaces/CommandList.h"
 
 bool
 DX11Device::Initialize()
@@ -7,6 +9,8 @@ DX11Device::Initialize()
     if (!CreateDeviceImpl()) {
         return false;
     }
+
+    gCommandList.SetGraphicsContext(new DX11GraphicsContext(this));
 
     return true;
 }
@@ -57,6 +61,12 @@ DX11Device::CreateDeviceImpl()
     }
 
     return true;
+}
+
+IGraphicsContext*
+DX11Device::CreateGraphicsContext()
+{
+    return new DX11GraphicsContext(this);
 }
 
 IGraphicsSurface*

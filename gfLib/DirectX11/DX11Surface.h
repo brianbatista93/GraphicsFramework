@@ -11,9 +11,10 @@ class DX11Surface : public IGraphicsSurface
     ~DX11Surface();
 
     // Inherited via GraphicsSurface
-    virtual void Present() override;
+    virtual void                 Present() override;
+    virtual class GpuTexture2D* GetBackBuffer() override;
 
   private:
     ComPtr<IDXGISwapChain> m_swapChain;
-    class Dx11Texture2D*   m_images;
+    class DX11Texture2D*   m_images;
 };

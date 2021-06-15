@@ -23,4 +23,6 @@ struct IGraphicsDevice : public IGraphicsObject
      * @brief Creates a new graphics surface.
     */
     virtual struct IGraphicsSurface* CreateSurface(void* windowHandle, uint32 width, uint32 height) = 0;
+
+    virtual struct IGraphicsContext* CreateGraphicsContext() = 0;
 };

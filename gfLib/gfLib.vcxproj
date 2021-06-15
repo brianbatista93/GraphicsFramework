@@ -165,17 +165,26 @@
   <ItemGroup>
     <ClInclude Include="DirectX11\DX11Common.h" />
     <ClInclude Include="DirectX11\DX11Device.h" />
+    <ClInclude Include="DirectX11\DX11GraphicsContext.h" />
+    <ClInclude Include="DirectX11\DX11Resources.h" />
     <ClInclude Include="DirectX11\DX11Surface.h" />
+    <ClInclude Include="Interfaces\CommandList.h" />
+    <ClInclude Include="Interfaces\GraphicsDefinitions.h" />
+    <ClInclude Include="Interfaces\GraphicsResources.h" />
     <ClInclude Include="Interfaces\IApplication.h" />
+    <ClInclude Include="Interfaces\IGraphicsContext.h" />
     <ClInclude Include="Interfaces\IGraphicsDevice.h" />
     <ClInclude Include="Interfaces\IGraphicsObject.h" />
     <ClInclude Include="Interfaces\IGraphicsSurface.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Resources\Texture2D.h" />
     <ClInclude Include="Windows\WindowsApplication.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11\DX11Device.cpp" />
+    <ClCompile Include="DirectX11\DX11GraphicsContext.cpp" />
     <ClCompile Include="DirectX11\DX11Surface.cpp" />
+    <ClCompile Include="DirectX11\DX11Textures.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

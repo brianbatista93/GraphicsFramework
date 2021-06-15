@@ -1,0 +1,18 @@
+#pragma once
+
+enum ETextureFlags : unsigned int
+{
+    TEXTURE_FLAG_NONE             = 0u,
+    TEXTURE_FLAG_RENDER_TARGET    = BIT(1u),
+    TEXTURE_FLAG_DEPTH_STENCIL    = BIT(2u),
+    TEXTURE_FLAG_SHADER_RESOURCE  = BIT(3u),
+    TEXTURE_FLAG_UNORDERED_ACCESS = BIT(4u),
+    TEXTURE_FLAG_SWAP_CHAIN       = BIT(5u)
+};
+
+enum EPixelFormat
+{
+    PIXEL_FORMAT_UNKNOWN = 0,
+    PIXEL_FORMAT_R8G8B8A8,
+    PIXEL_FORMAT_R10G10B10A2
+};
