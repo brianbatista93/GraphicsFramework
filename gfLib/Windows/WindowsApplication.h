@@ -18,6 +18,8 @@ class WindowsApplication : public IApplication
 
     constexpr void Exit() { m_isExiting = true; }
 
+    virtual IGraphicsDevice* GetDevice() override { return m_graphicsDevice.get(); }
+
     virtual IGraphicsSurface* GetSurface() override { return m_graphicsSurface.get(); }
 
   private:

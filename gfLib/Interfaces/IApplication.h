@@ -8,6 +8,8 @@ struct IApplication
 
     virtual bool IsExiting() = 0;
 
+    virtual struct IGraphicsDevice* GetDevice() = 0;
+
     virtual struct IGraphicsSurface* GetSurface() = 0;
 };
 

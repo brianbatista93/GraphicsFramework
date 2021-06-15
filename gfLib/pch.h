@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -22,6 +23,12 @@ using int64 = int64_t;
 #define SAFE_DELETE(x)                                                                                                                     \
     if (x) {                                                                                                                               \
         delete x;                                                                                                                          \
+        x = nullptr;                                                                                                                       \
+    }
+
+#define SAFE_DELETE_ARRAY(x)                                                                                                               \
+    if (x) {                                                                                                                               \
+        delete[] x;                                                                                                                          \
         x = nullptr;                                                                                                                       \
     }
 

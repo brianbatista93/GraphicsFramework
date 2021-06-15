@@ -177,12 +177,14 @@
     <ClInclude Include="Interfaces\IGraphicsObject.h" />
     <ClInclude Include="Interfaces\IGraphicsSurface.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Resources\Shaders.h" />
     <ClInclude Include="Resources\Texture2D.h" />
     <ClInclude Include="Windows\WindowsApplication.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX11\DX11Device.cpp" />
     <ClCompile Include="DirectX11\DX11GraphicsContext.cpp" />
+    <ClCompile Include="DirectX11\DX11Shaders.cpp" />
     <ClCompile Include="DirectX11\DX11Surface.cpp" />
     <ClCompile Include="DirectX11\DX11Textures.cpp" />
     <ClCompile Include="pch.cpp">

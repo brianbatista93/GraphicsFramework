@@ -19,4 +19,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\VertexShader.hlsl" />
+    <FxCompile Include="Shaders\PixelShader.hlsl" />
+    <FxCompile Include="Shaders\DomainShader.hlsl" />
+    <FxCompile Include="Shaders\HullShader.hlsl" />
+    <FxCompile Include="Shaders\GeometryShader.hlsl" />
+    <FxCompile Include="Shaders\ComputeShader.hlsl" />
+  </ItemGroup>
 </Project>

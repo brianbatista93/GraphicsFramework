@@ -25,3 +25,35 @@ class GpuTexture2D : public GpuResource
     uint32_t     m_flags;
     EPixelFormat m_format;
 };
+
+class GpuShader
+{
+  public:
+    virtual ~GpuShader() {}
+
+    constexpr EShaderStage GetStage() const { return m_stage; }
+
+  protected:
+    GpuShader(EShaderStage stage)
+      : m_stage(stage)
+    {}
+
+  protected:
+    EShaderStage m_stage;
+};
+
+template<EShaderStage StageType>
+class TGpuShader : public GpuShader
+{
+  public:
+    TGpuShader()
+      : GpuShader(StageType)
+    {}
+};
+
+typedef TGpuShader<SHADER_STAGE_VERTEX>   GpuVertexShader;
+typedef TGpuShader<SHADER_STAGE_PIXEL>    GpuPixelShader;
+typedef TGpuShader<SHADER_STAGE_DOMAIN>   GpuDomainShader;
+typedef TGpuShader<SHADER_STAGE_HULL>     GpuHullShader;
+typedef TGpuShader<SHADER_STAGE_GEOMETRY> GpuGeometryShader;
+typedef TGpuShader<SHADER_STAGE_COMPUTE>  GpuComputeShader;

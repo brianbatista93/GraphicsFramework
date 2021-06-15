@@ -3,6 +3,8 @@
 #include "DX11Surface.h"
 #include "Interfaces/CommandList.h"
 
+IGraphicsDevice* gGraphicsDevice;
+
 bool
 DX11Device::Initialize()
 {
@@ -11,6 +13,8 @@ DX11Device::Initialize()
     }
 
     gCommandList.SetGraphicsContext(new DX11GraphicsContext(this));
+
+    gGraphicsDevice = this;
 
     return true;
 }
