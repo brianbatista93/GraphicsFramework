@@ -36,6 +36,14 @@ struct Color
       , B(vec.Z)
       , A(1.0f)
     {}
+
+    Color& operator+=(const Color& other)
+    {
+        R += other.R;
+        G += other.G;
+        B += other.B;
+        return *this;
+    }
 };
 
 inline Color
@@ -46,6 +54,20 @@ operator*(float s, const Color& color)
         s * color.R,
         s * color.G,
         s * color.B
+    );
+    // clang-format on
+}
+
+template<class SType, typename = std::enable_if_t<std::is_arithmetic_v<SType>>>
+inline Color
+operator/(const Color& color, SType s)
+{
+    float t = 1.0f / static_cast<float>(s);
+    // clang-format off
+    return Color(
+        color.R * t,
+        color.G * t,
+        color.B * t
     );
     // clang-format on
 }
