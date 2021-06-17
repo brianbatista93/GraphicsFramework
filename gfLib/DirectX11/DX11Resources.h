@@ -2,6 +2,7 @@
 
 #include "Dx11Common.h"
 #include "Interfaces/GraphicsResources.h"
+#include "Math/Color.h"
 
 class DX11Texture2D : public GpuTexture2D
 {
@@ -18,6 +19,8 @@ class DX11Texture2D : public GpuTexture2D
     ComPtr<ID3D11DepthStencilView>    GetDx11DSV() { return m_dx11DSV; }
     ComPtr<ID3D11UnorderedAccessView> GetDx11UAV() { return m_dx11UAV; }
 
+    virtual void SetPixelRow(uint32 rowIndex, const Color* color) override;
+
   private:
     void CreateViews();
 
@@ -28,6 +31,7 @@ class DX11Texture2D : public GpuTexture2D
     ComPtr<ID3D11RenderTargetView>    m_dx11RT;
     ComPtr<ID3D11DepthStencilView>    m_dx11DSV;
     ComPtr<ID3D11UnorderedAccessView> m_dx11UAV;
+    D3D11_MAPPED_SUBRESOURCE          m_mappedSubRes;
 };
 
 class DX11ConstantBuffer : public GpuConstantBuffer

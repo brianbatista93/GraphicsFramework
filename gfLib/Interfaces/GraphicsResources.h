@@ -3,6 +3,8 @@
 #include "GraphicsDefinitions.h"
 #include <cstdint>
 
+struct Color;
+
 class GpuResource
 {
   public:
@@ -23,6 +25,8 @@ class GpuTexture2D : public GpuResource
     constexpr uint32       GetHeight() const { return m_height; }
     constexpr uint32       GetFlags() const { return m_flags; }
     constexpr EPixelFormat GetFormat() const { return m_format; }
+
+    virtual void SetPixelRow(uint32 rowIndex, const Color* color) {}
 
   protected:
     uint32       m_width;

@@ -7,7 +7,8 @@ enum ETextureFlags : unsigned int
     TEXTURE_FLAG_DEPTH_STENCIL    = BIT(2u),
     TEXTURE_FLAG_SHADER_RESOURCE  = BIT(3u),
     TEXTURE_FLAG_UNORDERED_ACCESS = BIT(4u),
-    TEXTURE_FLAG_SWAP_CHAIN       = BIT(5u)
+    TEXTURE_FLAG_SWAP_CHAIN       = BIT(5u),
+    TEXTURE_FLAG_WRITABLE         = BIT(6u),
 };
 
 enum EPixelFormat
@@ -15,7 +16,8 @@ enum EPixelFormat
     PIXEL_FORMAT_UNKNOWN = 0,
     PIXEL_FORMAT_R8G8B8A8,
     PIXEL_FORMAT_R8G8B8A8_UINT,
-    PIXEL_FORMAT_R10G10B10A2
+    PIXEL_FORMAT_R10G10B10A2,
+    PIXEL_FORMAT_R32G32B32A32
 };
 
 enum EShaderStage
@@ -73,3 +75,20 @@ enum EPrimitiveTopology
     PRIMITIVE_TOPOLOGY_31_CONTROL_POINT_PATCHLIST = 63,
     PRIMITIVE_TOPOLOGY_32_CONTROL_POINT_PATCHLIST = 64,
 };
+
+inline uint32
+GetFormatSizeInBytes(EPixelFormat format)
+{
+    switch (format) {
+        case PIXEL_FORMAT_R8G8B8A8:
+            return 4;
+        case PIXEL_FORMAT_R8G8B8A8_UINT:
+            return 4;
+        case PIXEL_FORMAT_R10G10B10A2:
+            return 1;
+        case PIXEL_FORMAT_R32G32B32A32:
+            return 16;
+        default:
+            return 0;
+    }
+}

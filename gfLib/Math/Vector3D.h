@@ -74,7 +74,9 @@ struct TVector3D
         // clang-format on
     }
 
-    [[nodiscard]] constexpr double Length() const { return sqrt(*this | *this); }
+    [[nodiscard]] constexpr T Length() const { return static_cast<T>(sqrt(*this | *this)); }
+
+    [[nodiscard]] constexpr T LengthSquared() const { return X * X + Y * Y + Z * Z; }
 
     constexpr static TVector3D<T> Zero() { return TVector3D(0, 0, 0); }
     constexpr static TVector3D<T> One() { return TVector3D(1, 1, 1); }
@@ -111,7 +113,7 @@ template<class SType, class UType>
 inline TVector3D<UType>
 operator*(SType s, const TVector3D<UType>& u)
 {
-    return TVector3D<UType>(u.X * s, u.Y * s, u.Z * s);
+    return TVector3D<UType>(u.X * UType(s), u.Y * UType(s), u.Z * UType(s));
 }
 
 template<class SType, class UType>
@@ -153,3 +155,5 @@ using fVector3D = TVector3D<float>;
 using dVector3D = TVector3D<double>;
 using iVector3D = TVector3D<int32>;
 using uVector3D = TVector3D<uint32>;
+
+using Vector3D = fVector3D;

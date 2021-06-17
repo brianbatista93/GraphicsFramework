@@ -12,6 +12,8 @@ GetD3D11Format(EPixelFormat format)
             return DXGI_FORMAT_R8G8B8A8_UINT;
         case PIXEL_FORMAT_R10G10B10A2:
             return DXGI_FORMAT_R10G10B10A2_UNORM;
+        case PIXEL_FORMAT_R32G32B32A32:
+            return DXGI_FORMAT_R32G32B32A32_FLOAT;
         default:
             return DXGI_FORMAT_UNKNOWN;
     }
@@ -27,6 +29,8 @@ GetFrameworkFormat(DXGI_FORMAT format)
             return PIXEL_FORMAT_R8G8B8A8_UINT;
         case DXGI_FORMAT_R10G10B10A2_UNORM:
             return PIXEL_FORMAT_R10G10B10A2;
+        case DXGI_FORMAT_R32G32B32A32_FLOAT:
+            return PIXEL_FORMAT_R32G32B32A32;
         default:
             return PIXEL_FORMAT_UNKNOWN;
     }
@@ -207,7 +211,7 @@ DX11Texture2D::DX11Texture2D(DX11Device* device, uint32 width, uint32 height, EP
     D3D11_TEXTURE2D_DESC desc {
       .Width     = width,
       .Height    = height,
-      .MipLevels = 0,
+      .MipLevels = HAS_FLAG(m_flags, TEXTURE_FLAG_WRITABLE) ? 1u : 0u,
       .ArraySize = 1,
       .Format    = GetD3D11Format(format),
       .SampleDesc {
@@ -216,12 +220,31 @@ DX11Texture2D::DX11Texture2D(DX11Device* device, uint32 width, uint32 height, EP
       },
       .Usage          = GetD3D11Usage(m_flags),
       .BindFlags      = GetD3D11BindFlags(m_flags),
-      .CPUAccessFlags = 0,
+      .CPUAccessFlags = HAS_FLAG(m_flags, TEXTURE_FLAG_WRITABLE) ? D3D11_CPU_ACCESS_WRITE : 0u,
       .MiscFlags      = 0,
     };
 
     ThrowIfFailed(device->GetD3D11Device()->CreateTexture2D(&desc, NULL, &m_dx11Texture));
     CreateViews();
+}
+
+void
+DX11Texture2D::SetPixelRow(uint32 rowIndex, const Color* color)
+{
+    assert(color);
+
+    D3D11_BOX box;
+
+    box.left   = 0;
+    box.right  = m_width;
+    box.top    = rowIndex;
+    box.bottom = rowIndex + 1;
+    box.front  = 0;
+    box.back   = 1;
+
+    uint32 rowPitch = m_width * GetFormatSizeInBytes(m_format);
+
+    m_device->GetD3D11Context()->UpdateSubresource(m_dx11Texture.Get(), 0, &box, color, rowPitch, 0);
 }
 
 void
@@ -250,7 +273,7 @@ DX11Texture2D::CreateViews()
     if (HAS_FLAG(m_flags, TEXTURE_FLAG_SHADER_RESOURCE)) {
 
         D3D11_SHADER_RESOURCE_VIEW_DESC srDesc
-          = CD3D11_SHADER_RESOURCE_VIEW_DESC(m_dx11Texture.Get(), D3D11_SRV_DIMENSION_TEXTURE2D, GetBaseFormat(format));
+          = CD3D11_SHADER_RESOURCE_VIEW_DESC(m_dx11Texture.Get(), D3D11_SRV_DIMENSION_TEXTURE2D, (format));
 
         ThrowIfFailed(dx11Device->CreateShaderResourceView(m_dx11Texture.Get(), &srDesc, &m_dx11SRV));
     }

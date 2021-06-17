@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Interfaces/GraphicsResources.h"
+#include "Math/Color.h"
 
 class Texture2D
 {
@@ -11,6 +12,8 @@ class Texture2D
 
     constexpr GpuTexture2D* GetGpuTexture2D() { return m_gpuTexture; }
     constexpr uint32        GetFlags() const { return m_gpuTexture->GetFlags(); }
+
+    void SetPixelRow(uint32 rowIndex, const Color* color);
 
   private:
     GpuTexture2D* m_gpuTexture;
