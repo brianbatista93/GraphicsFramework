@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+  <Type Name="TVector2D&lt;*&gt;">
+    <DisplayString>({X}, {Y})</DisplayString>
+  </Type>
+
+  <Type Name="TVector3D&lt;*&gt;">
+    <DisplayString>({X}, {Y}, {Z})</DisplayString>
+  </Type>
+
+  <Type Name="TVector4D&lt;*&gt;">
+    <DisplayString>({X}, {Y}, {Z}, {W})</DisplayString>
+  </Type>
+
+</AutoVisualizer>

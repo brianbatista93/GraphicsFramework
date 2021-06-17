@@ -8,7 +8,7 @@ class DX11Texture2D : public GpuTexture2D
   public:
     DX11Texture2D(class DX11Device* device, IDXGISwapChain* swapChain);
 
-    DX11Texture2D(class DX11Device* device, uint32 width, uint32 height, EPixelFormat format);
+    DX11Texture2D(class DX11Device* device, uint32 width, uint32 height, EPixelFormat format, ETextureFlags flags);
 
     ~DX11Texture2D() { m_device = nullptr; }
 
@@ -30,20 +30,45 @@ class DX11Texture2D : public GpuTexture2D
     ComPtr<ID3D11UnorderedAccessView> m_dx11UAV;
 };
 
+class DX11ConstantBuffer : public GpuConstantBuffer
+{
+  public:
+    DX11ConstantBuffer(class DX11Device* device, uint32 elementsCount, uint32 elementStride, const void* data);
+
+    ComPtr<ID3D11Buffer> GetD3D11Buffer() { return m_buffer; }
+
+  private:
+    class DX11Device*    m_device;
+    ComPtr<ID3D11Buffer> m_buffer;
+};
+
 class DX11Shader
-{};
+{
+  protected:
+    DX11Shader(class DX11Device* device)
+      : m_device(device)
+    {}
+
+  protected:
+    class DX11Device* m_device;
+};
 
 class DX11VertexShader
   : public DX11Shader
   , public GpuVertexShader
 {
   public:
-    DX11VertexShader(ID3D11VertexShader* shader, const void* blob, uint64 size)
-      : m_vshader(shader)
+    DX11VertexShader(class DX11Device* device, ID3D11VertexShader* shader, const void* blob, uint64 size)
+      : DX11Shader(device)
+      , m_vshader(shader)
       , m_blob(reinterpret_cast<const uint8*>(blob), reinterpret_cast<const uint8*>(blob) + size)
     {}
 
     ComPtr<ID3D11VertexShader> GetDx11Shader() const { return m_vshader; }
+
+    virtual void SetConstantBuffer(uint32 index, class ConstantBuffer* buffer) override;
+
+    virtual void SetTexture2D(uint32 index, class Texture2D* tex2D) override;
 
   private:
     ComPtr<ID3D11VertexShader> m_vshader;
@@ -55,11 +80,16 @@ class DX11PixelShader
   , public GpuPixelShader
 {
   public:
-    DX11PixelShader(ID3D11PixelShader* shader)
-      : m_pshader(shader)
+    DX11PixelShader(class DX11Device* device, ID3D11PixelShader* shader)
+      : DX11Shader(device)
+      , m_pshader(shader)
     {}
 
     ComPtr<ID3D11PixelShader> GetDx11Shader() const { return m_pshader; }
+
+    virtual void SetConstantBuffer(uint32 index, class ConstantBuffer* buffer) override;
+
+    virtual void SetTexture2D(uint32 index, class Texture2D* tex2D) override;
 
   private:
     ComPtr<ID3D11PixelShader> m_pshader;
@@ -70,11 +100,16 @@ class DX11DomainShader
   , public GpuDomainShader
 {
   public:
-    DX11DomainShader(ID3D11DomainShader* shader)
-      : m_dshader(shader)
+    DX11DomainShader(class DX11Device* device, ID3D11DomainShader* shader)
+      : DX11Shader(device)
+      , m_dshader(shader)
     {}
 
     ComPtr<ID3D11DomainShader> GetDx11Shader() const { return m_dshader; }
+
+    virtual void SetConstantBuffer(uint32 index, class ConstantBuffer* buffer) override;
+
+    virtual void SetTexture2D(uint32 index, class Texture2D* tex2D) override;
 
   private:
     ComPtr<ID3D11DomainShader> m_dshader;
@@ -85,11 +120,16 @@ class DX11HullShader
   , public GpuHullShader
 {
   public:
-    DX11HullShader(ID3D11HullShader* shader)
-      : m_hshader(shader)
+    DX11HullShader(class DX11Device* device, ID3D11HullShader* shader)
+      : DX11Shader(device)
+      , m_hshader(shader)
     {}
 
     ComPtr<ID3D11HullShader> GetDx11Shader() const { return m_hshader; }
+
+    virtual void SetConstantBuffer(uint32 index, class ConstantBuffer* buffer) override;
+
+    virtual void SetTexture2D(uint32 index, class Texture2D* tex2D) override;
 
   private:
     ComPtr<ID3D11HullShader> m_hshader;
@@ -100,11 +140,16 @@ class DX11GeometryShader
   , public GpuGeometryShader
 {
   public:
-    DX11GeometryShader(ID3D11GeometryShader* shader)
-      : m_gshader(shader)
+    DX11GeometryShader(class DX11Device* device, ID3D11GeometryShader* shader)
+      : DX11Shader(device)
+      , m_gshader(shader)
     {}
 
     ComPtr<ID3D11GeometryShader> GetDx11Shader() const { return m_gshader; }
+
+    virtual void SetConstantBuffer(uint32 index, class ConstantBuffer* buffer) override;
+
+    virtual void SetTexture2D(uint32 index, class Texture2D* tex2D) override;
 
   private:
     ComPtr<ID3D11GeometryShader> m_gshader;
@@ -115,11 +160,18 @@ class DX11ComputeShader
   , public GpuComputeShader
 {
   public:
-    DX11ComputeShader(ID3D11ComputeShader* shader)
-      : m_cshader(shader)
+    DX11ComputeShader(class DX11Device* device, ID3D11ComputeShader* shader)
+      : DX11Shader(device)
+      , m_cshader(shader)
     {}
 
     ComPtr<ID3D11ComputeShader> GetDx11Shader() const { return m_cshader; }
+
+    virtual void SetConstantBuffer(uint32 index, class ConstantBuffer* buffer) override;
+
+    virtual void SetTexture2D(uint32 index, class Texture2D* tex2D) override;
+
+    virtual void SetUAV(uint32 index, class Texture2D* tex2D) override;
 
   private:
     ComPtr<ID3D11ComputeShader> m_cshader;

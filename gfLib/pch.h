@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <filesystem>
 #include <iostream>
 #include <memory>
@@ -28,7 +29,7 @@ using int64 = int64_t;
 
 #define SAFE_DELETE_ARRAY(x)                                                                                                               \
     if (x) {                                                                                                                               \
-        delete[] x;                                                                                                                          \
+        delete[] x;                                                                                                                        \
         x = nullptr;                                                                                                                       \
     }
 

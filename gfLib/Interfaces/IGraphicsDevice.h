@@ -27,6 +27,8 @@ struct IGraphicsDevice : public IGraphicsObject
 
     virtual struct IGraphicsContext* CreateGraphicsContext() = 0;
 
+    virtual GpuConstantBuffer* CreateConstantBuffer(uint32 elementsCount, uint32 elementStride, const void* data = nullptr) = 0;
+
     inline void SetShaderDir(const std::filesystem::path& dir) { m_shaderDir = std::filesystem::absolute(dir); }
 
     inline std::filesystem::path GetShaderDir() const { return m_shaderDir; }
@@ -72,6 +74,8 @@ struct IGraphicsDevice : public IGraphicsObject
     {
         return CreateComputeShader(filename);
     }
+
+    virtual GpuTexture2D* CreateTexture2D(uint32 width, uint32 height, EPixelFormat format, ETextureFlags flags) = 0;
 
   protected:
     virtual GpuVertexShader*   CreateVertexShader(const std::filesystem::path& filename)   = 0;

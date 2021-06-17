@@ -4,7 +4,15 @@ static float3 vertices[3] = {
 	float3(-0.5, -0.5, 0.0)
 };
 
-float4 main(uint vertexID : SV_VertexID) : SV_POSITION
+struct V2F {
+	float4 Position : SV_POSITION;
+};
+
+V2F main(uint vertexID : SV_VertexID)
 {
-	return float4(vertices[vertexID], 1.0);
+	V2F OUT = (V2F)0;
+
+	OUT.Position = float4(vertices[vertexID], 1.0);
+
+	return OUT;
 }

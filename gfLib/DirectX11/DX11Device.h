@@ -17,6 +17,8 @@ class DX11Device : public IGraphicsDevice
     virtual GpuHullShader*     CreateHullShader(const std::filesystem::path& filename) override;
     virtual GpuGeometryShader* CreateGeometryShader(const std::filesystem::path& filename) override;
     virtual GpuComputeShader*  CreateComputeShader(const std::filesystem::path& filename) override;
+    virtual GpuConstantBuffer* CreateConstantBuffer(uint32 elementsCount, uint32 elementStride, const void* data) override;
+    virtual GpuTexture2D*      CreateTexture2D(uint32 width, uint32 height, EPixelFormat format, ETextureFlags flags) override;
 
     ComPtr<ID3D11Device>        GetD3D11Device() { return m_d3d11Device; }
     ComPtr<ID3D11DeviceContext> GetD3D11Context() { return m_d3d11Context; }

@@ -8,6 +8,8 @@ GetD3D11Format(EPixelFormat format)
     switch (format) {
         case PIXEL_FORMAT_R8G8B8A8:
             return DXGI_FORMAT_R8G8B8A8_UNORM;
+        case PIXEL_FORMAT_R8G8B8A8_UINT:
+            return DXGI_FORMAT_R8G8B8A8_UINT;
         case PIXEL_FORMAT_R10G10B10A2:
             return DXGI_FORMAT_R10G10B10A2_UNORM;
         default:
@@ -16,11 +18,13 @@ GetD3D11Format(EPixelFormat format)
 }
 
 EPixelFormat
-GetFormat(DXGI_FORMAT format)
+GetFrameworkFormat(DXGI_FORMAT format)
 {
     switch (format) {
         case DXGI_FORMAT_R8G8B8A8_UNORM:
             return PIXEL_FORMAT_R8G8B8A8;
+        case DXGI_FORMAT_R8G8B8A8_UINT:
+            return PIXEL_FORMAT_R8G8B8A8_UINT;
         case DXGI_FORMAT_R10G10B10A2_UNORM:
             return PIXEL_FORMAT_R10G10B10A2;
         default:
@@ -190,15 +194,15 @@ DX11Texture2D::DX11Texture2D(DX11Device* device, IDXGISwapChain* swapChain)
     m_dx11Texture->GetDesc(&desc);
     m_width  = desc.Width;
     m_height = desc.Height;
-    m_format = GetFormat(desc.Format);
+    m_format = GetFrameworkFormat(desc.Format);
     m_flags  = TEXTURE_FLAG_SWAP_CHAIN;
 
     CreateViews();
 }
 
-DX11Texture2D::DX11Texture2D(DX11Device* device, uint32 width, uint32 height, EPixelFormat format)
+DX11Texture2D::DX11Texture2D(DX11Device* device, uint32 width, uint32 height, EPixelFormat format, ETextureFlags flags)
   : m_device(device)
-  , GpuTexture2D(width, height, format)
+  , GpuTexture2D(width, height, format, flags)
 {
     D3D11_TEXTURE2D_DESC desc {
       .Width     = width,

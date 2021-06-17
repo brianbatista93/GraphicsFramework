@@ -103,6 +103,51 @@ DX11GraphicsContext::SetComputeShader(GpuComputeShader* cshader)
 void
 DX11GraphicsContext::Draw(uint32 vertexCount, uint32 vertexStart)
 {
-    m_d3d11Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     m_d3d11Context->Draw(vertexCount, vertexStart);
+}
+
+void
+DX11GraphicsContext::SetRenderTargetsDepthStencil(std::vector<GpuTexture2D*> rt, GpuTexture2D* ds)
+{
+    std::vector<ID3D11RenderTargetView*> dx11Views;
+
+    for (uint32 i = 0; i < rt.size(); i++) {
+        assert(HAS_FLAG(rt[i]->GetFlags(), TEXTURE_FLAG_RENDER_TARGET) || HAS_FLAG(rt[i]->GetFlags(), TEXTURE_FLAG_SWAP_CHAIN));
+        ID3D11RenderTargetView* dx11RTView = dynamic_cast<DX11Texture2D*>(rt[i])->GetDx11RT().Get();
+        dx11Views.push_back(dx11RTView);
+    }
+
+    ID3D11DepthStencilView* dx11DSView = nullptr;
+    if (ds) {
+        assert(HAS_FLAG(ds->GetFlags(), TEXTURE_FLAG_DEPTH_STENCIL));
+        dx11DSView = dynamic_cast<DX11Texture2D*>(ds)->GetDx11DSV().Get();
+    }
+
+    m_d3d11Context->OMSetRenderTargets((UINT)dx11Views.size(), dx11Views.data(), dx11DSView);
+}
+
+void
+DX11GraphicsContext::SetViewport(float x, float y, float width, float height, float nearPlane, float farPlane)
+{
+    D3D11_VIEWPORT vp = CD3D11_VIEWPORT(x, y, width, height, nearPlane, farPlane);
+    m_d3d11Context->RSSetViewports(1, &vp);
+}
+
+void
+DX11GraphicsContext::SetScissor(long left, long top, long right, long bottom)
+{
+    D3D11_RECT rect = CD3D11_RECT(left, top, right, bottom);
+    m_d3d11Context->RSSetScissorRects(1, &rect);
+}
+
+void
+DX11GraphicsContext::SetPrimitiveTopology(EPrimitiveTopology topology)
+{
+    m_d3d11Context->IASetPrimitiveTopology((D3D11_PRIMITIVE_TOPOLOGY)topology);
+}
+
+void
+DX11GraphicsContext::Dispatch(uint32 x, uint32 y, uint32 z)
+{
+    m_d3d11Context->Dispatch(x, y, z);
 }

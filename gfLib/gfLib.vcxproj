@@ -176,12 +176,15 @@
     <ClInclude Include="Interfaces\IGraphicsDevice.h" />
     <ClInclude Include="Interfaces\IGraphicsObject.h" />
     <ClInclude Include="Interfaces\IGraphicsSurface.h" />
+    <ClInclude Include="Math\Vector3D.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Resources\ConstantBuffer.h" />
     <ClInclude Include="Resources\Shaders.h" />
     <ClInclude Include="Resources\Texture2D.h" />
     <ClInclude Include="Windows\WindowsApplication.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DirectX11\DX11Buffers.cpp" />
     <ClCompile Include="DirectX11\DX11Device.cpp" />
     <ClCompile Include="DirectX11\DX11GraphicsContext.cpp" />
     <ClCompile Include="DirectX11\DX11Shaders.cpp" />
@@ -193,7 +196,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Resources\ConstantBuffer.cpp" />
+    <ClCompile Include="Resources\Texture2D.cpp" />
     <ClCompile Include="Windows\WindowsApplication.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="Misc\gfLib.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
