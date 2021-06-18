@@ -58,6 +58,30 @@ operator*(float s, const Color& color)
     // clang-format on
 }
 
+inline Color
+operator*(const Color& a, const Color& b)
+{
+    // clang-format off
+    return Color(
+        a.R * b.R,
+        a.G * b.G,
+        a.B * b.B
+    );
+    // clang-format on
+}
+
+inline Color
+operator+(const Color& a, const Color& b)
+{
+    // clang-format off
+    return Color(
+        a.R + b.R,
+        a.G + b.G,
+        a.B + b.B
+    );
+    // clang-format on
+}
+
 template<class SType, typename = std::enable_if_t<std::is_arithmetic_v<SType>>>
 inline Color
 operator/(const Color& color, SType s)

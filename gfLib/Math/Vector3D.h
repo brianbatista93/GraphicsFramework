@@ -78,6 +78,12 @@ struct TVector3D
 
     [[nodiscard]] constexpr T LengthSquared() const { return X * X + Y * Y + Z * Z; }
 
+    [[nodiscard]] constexpr bool IsNearZero() const
+    {
+        const float epslon = 1e-8f;
+        return (fabs(E[0]) < epslon) && (fabs(E[1]) < epslon) && (fabs(E[2]) < epslon);
+    }
+
     constexpr static TVector3D<T> Zero() { return TVector3D(0, 0, 0); }
     constexpr static TVector3D<T> One() { return TVector3D(1, 1, 1); }
     constexpr static TVector3D<T> Up() { return TVector3D(0, 1, 0); }
@@ -149,6 +155,13 @@ template<class UType>
 Normalize(const TVector3D<UType>& u)
 {
     return u / u.Length();
+}
+
+template<class UType, class VType>
+[[nodiscard]] inline TVector3D<UType>
+Reflect(const TVector3D<UType>& u, const TVector3D<VType>& v)
+{
+    return u - UType(2) * Dot(u, v) * v;
 }
 
 using fVector3D = TVector3D<float>;
